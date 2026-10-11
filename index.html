@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pengembaraan Jawi</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Noto+Naskh+Arabic:wght@700&display=swap">
+<style>
+:root{--sky:#6ab7ff;--sky2:#d6eeff;--ink:#2b1b12;--card:#fff8e1;--brick:#c8501e;--brick2:#8f3410;--pipe:#1fa84a;--coin:#ffcf33;--red:#e53935;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--sky:#1b2a6b;--sky2:#3a4fa8;--card:#3b2a20;--ink:#fff3d6}}
+:root[data-theme="dark"]{--sky:#1b2a6b;--sky2:#3a4fa8;--card:#3b2a20;--ink:#fff3d6}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{height:100%;margin:0;display:flex;justify-content:center;font-family:Fredoka,"Trebuchet MS",sans-serif;color:var(--ink);background:linear-gradient(var(--sky),var(--sky2))}
+#app{position:relative;width:100%;max-width:480px;height:100%;display:flex;flex-direction:column;overflow:hidden}
+.cloud{position:absolute;width:76px;height:26px;background:#fff;border-radius:20px;opacity:.9;box-shadow:18px -12px 0 4px #fff,-14px -6px 0 0 #fff}
+#hud{position:relative;display:flex;justify-content:space-between;padding:10px 16px;font-size:1.15rem;font-weight:700;visibility:hidden}
+#main{position:relative;flex:1;overflow-y:auto;padding:4px 16px 16px;text-align:center}
+.ground{position:relative;height:64px;flex:none;background:repeating-linear-gradient(90deg,var(--brick) 0 38px,var(--brick2) 38px 40px);border-top:8px solid #3cb44b}
+#hero{position:absolute;left:18px;bottom:56px}
+.pipe{position:absolute;right:20px;bottom:56px;width:48px;height:38px;background:var(--pipe);border:3px solid #0d6b2c;border-radius:4px 4px 0 0;box-shadow:inset 8px 0 0 #4fd172}
+h1{margin:14px 0 4px;font-size:2rem;line-height:1.1;text-shadow:0 3px 0 rgba(0,0,0,.18)}
+.sub{margin:0 0 16px}
+.card{background:var(--card);border:4px solid var(--ink);border-radius:14px;padding:12px;margin-top:6px;box-shadow:0 5px 0 rgba(0,0,0,.25)}
+.em{font-size:3.4rem;line-height:1.1}.rumi{font-size:2.2rem;font-weight:700}
+.tip{margin:10px 0;font-size:.95rem;font-weight:500}
+.btn,.blk{display:block;width:100%;margin:10px 0;border:4px solid var(--brick2);border-radius:10px;background:var(--brick);color:#fff8e1;box-shadow:inset 0 5px 0 rgba(255,255,255,.28),0 5px 0 var(--brick2);cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
+.btn{padding:14px;font-size:1.1rem;font-weight:700}
+.btn.alt{background:var(--pipe);border-color:#0d6b2c;box-shadow:inset 0 5px 0 rgba(255,255,255,.28),0 5px 0 #0d6b2c}
+.btn small{display:block;font-weight:500;opacity:.9}
+.blk{min-height:76px;font-family:"Noto Naskh Arabic","Amiri",serif;font-size:2.3rem;font-weight:700;line-height:1.4}
+.blk:active{transform:translateY(3px)}
+.blk.good{background:var(--pipe);border-color:#0d6b2c;animation:bump .4s}
+.blk.bad{background:#777;border-color:#444;animation:shake .4s}
+.blk.show{background:var(--pipe);border-color:#0d6b2c}
+#msg{min-height:2.6em;font-weight:700;font-size:1.05rem;margin-top:6px}
+.jump{animation:jump .55s ease-out}
+.pop{position:absolute;left:30px;bottom:130px;font-size:1.6rem;font-weight:700;animation:pop .9s forwards;pointer-events:none}
+.stars{font-size:2.4rem;margin:8px 0}
+@keyframes jump{0%,100%{transform:translateY(0)}45%{transform:translateY(-80px)}}
+@keyframes pop{to{transform:translateY(-70px);opacity:0}}
+@keyframes bump{40%{transform:translateY(-8px)}}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+input{width:100%;box-sizing:border-box;padding:11px;border:3px solid var(--ink);border-radius:10px;font:inherit;margin:5px 0;background:var(--card);color:var(--ink)}
+.chips{display:flex;gap:8px;margin:8px 0}.chip{flex:1;padding:10px 4px;border:3px solid var(--ink);border-radius:10px;background:var(--card);color:var(--ink);font:inherit;font-weight:700;cursor:pointer}.chip.on{background:var(--coin);color:#2b1b12}
+.bar{height:12px;border:3px solid var(--ink);border-radius:8px;background:var(--card);margin-top:8px;overflow:hidden}.bar i{display:block;height:100%;width:100%;background:var(--red)}
+.jw{font-family:"Noto Naskh Arabic","Amiri",serif;font-size:2.4rem;font-weight:700;direction:rtl;line-height:1.5}.jw.s{font-size:1.6rem}
+.blk.r{font-family:Fredoka,sans-serif;font-size:1.6rem}
+.row{display:flex;align-items:center;gap:10px;padding:8px 6px;border-bottom:2px dashed rgba(128,128,128,.4);text-align:left}.row.me{background:var(--coin);color:#2b1b12;border-radius:8px}.row .nm{flex:1}.row small{display:block;opacity:.8}
+.tbl{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.85rem}th,td{padding:6px 4px;border-bottom:1px solid rgba(128,128,128,.4);text-align:center}td:nth-child(2){text-align:left}
+.note{font-size:.85rem;opacity:.85;margin:6px 0}.err{color:var(--red);font-weight:700;min-height:1.2em}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+<div class="cloud" style="top:9%;left:14%"></div><div class="cloud" style="top:22%;right:16%"></div>
+<header id="hud"><span id="st"></span><span id="co"></span><span id="lv"></span></header>
+<main id="main"></main>
+<div class="ground">
+<svg id="hero" viewBox="0 0 48 64" width="46" height="62" aria-hidden="true">
+<rect x="9" y="56" width="12" height="8" rx="3" fill="#6b3a1e"/><rect x="27" y="56" width="12" height="8" rx="3" fill="#6b3a1e"/>
+<rect x="10" y="36" width="28" height="22" rx="6" fill="#2d62d8"/><rect x="4" y="38" width="9" height="13" rx="4" fill="#e53935"/><rect x="35" y="38" width="9" height="13" rx="4" fill="#e53935"/>
+<circle cx="24" cy="22" r="14" fill="#ffd9b0"/><path d="M9 20a15 15 0 0 1 30 0z" fill="#e53935"/><rect x="22" y="12" width="20" height="6" rx="3" fill="#e53935"/>
+<circle cx="24" cy="12" r="5" fill="#fff"/><text x="24" y="15.5" font-size="9" font-weight="700" text-anchor="middle" fill="#e53935">J</text>
+<circle cx="19" cy="25" r="2" fill="#222"/><circle cx="29" cy="25" r="2" fill="#222"/><path d="M19 31q5 4 10 0" stroke="#222" stroke-width="2" fill="none"/>
+</svg>
+<div class="pipe"></div>
+</div>
+</div>
+<script>
+const D={a:[["🧴","cuka","چوک"],["🐒","ungka","اوڠک"],["🍈","nangka","نڠک"],["💭","sangka","سڠک"],["🩹","luka","لوک"],["🙂","muka","موک"],["📖","buka","بوک"],["😢","duka","دوک"],["⏰","ketika","کتيک"]],
+b:[["🥭","mangga","مڠݢ"],["🐜","kerengga","کرڠݢ"],["🪜","tangga","تڠݢ"],["3️⃣","tiga","تيݢ"],["😊","bangga","بڠݢ"],["🟠","jingga","جيڠݢ"],["🤲","moga","موݢ"]]};
+const SEN=[{t:"بواه ____ راسان مانيس",a:"نڠک",w:[0,2]},{t:"ايلقکن درقد ____ بوروق",a:"برسڠک",w:[0,2]},{t:"ڤرڤوستاکاءن ____ ڤد ڤوکول 8.00 ڤاکي",a:"دبوک",w:[0,2]},{t:"ساي باليق دري سکوله ____ هوجن لبت",a:"کتيک",w:[0,2]},{t:"کورو براس ____ دڠن کجاياءن مورید-موريدڽ",a:"بڠݢ",w:[1,2]}];
+const S=[{h:"bunyi -ka ditulis ک",tip:"Bunyi -ka di hujung perkataan ditulis dengan huruf ک.",p:()=>D.a,k:6},{h:"bunyi -ga ditulis ݢ",tip:"Bunyi -ga atau -ngga di hujung perkataan ditulis dengan huruf ݢ.",p:()=>D.b,k:6},{h:"cabaran bos: ک atau ݢ?",tip:"Dengar bunyi hujung perkataan: -ka atau -ga?",p:()=>[...D.a,...D.b],k:8}];
+const TN=["Mudah","Sederhana","Sukar"],PT=[10,15,20],LIM=12;
+const $=s=>document.querySelector(s),M=$("#main");
+const sh=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(p=>p[1]);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function ls(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}}
+function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+let P=ls("pj_p",{}),T=0,g,cur,B=[],V="home",db=null,uid=null,isT=false,tm,L="";
+if(!P.lid)P.lid="l"+Math.random().toString(36).slice(2,10);
+const shared=()=>!!(db&&uid),myId=()=>shared()?uid:P.lid;
+B=Object.entries(ls("pj_lb",{})).map(([id,r])=>({id,...r}));
+function jopts(j){const w=j.slice(0,-1);return sh([j,w+({"ک":"ݢ","ݢ":"ک"}[j.slice(-1)]||"ک"),w])}
+function ropts(r){const w=r.slice(0,-2),x={ka:"ga",ga:"ka"}[r.slice(-2)]||"ka";return sh([r,w+x,r.slice(0,-1)])}
+function mk(it,w){return T==1?{top:`<div class="em">${it[0]}</div><div class="jw">${it[2]}</div>`,ans:it[1],opts:ropts(it[1]),cls:"blk r",tip:"Pilih bacaan Rumi yang betul."}:{top:`<div class="em">${it[0]}</div><div class="rumi">${it[1]}</div>`,ans:it[2],opts:jopts(it[2]),cls:"blk",tip:S[w].tip}}
+function build(w){const k=S[w].k,p=S[w].p();if(T<2)return sh(p).slice(0,k).map(i=>mk(i,w));
+const sn=sh(SEN.filter(s=>s.w.includes(w))).map(s=>({top:`<div class="jw s">${s.t}</div>`,ans:s.a,opts:jopts(s.a),cls:"blk",tip:"Isi tempat kosong dengan ejaan Jawi yang betul."}));
+return sn.concat(sh(p).slice(0,k-sn.length).map(i=>mk(i,w)))}
+function home(){V="home";clearInterval(tm);$("#hud").style.visibility="hidden";
+M.innerHTML=`<h1>Pengembaraan Jawi</h1><p class="sub">Lompat, kutip syiling dan kumpul markah.</p><input id="nm" maxlength="30" placeholder="Nama murid" autocomplete="off"><input id="kl" maxlength="20" placeholder="Kelas (contoh: 3 Bestari)" autocomplete="off"><div class="err" id="err"></div>
+<div class="chips">${TN.map((n,i)=>`<button class="chip ${i==T?"on":""}" onclick="T=${i};home()">${n}</button>`).join("")}</div>`+
+S.map((s,i)=>`<button class="btn ${i==2?"alt":""}" onclick="start(${i})">Dunia ${i+1}<small>${s.h}</small></button>`).join("")+
+`<button class="btn alt" onclick="board()">Carta Tangga</button>${isT?'<button class="btn" onclick="guru()">Semakan guru</button>':""}<p class="note">${shared()?"":"Selepas bermain, hantar kod keputusan kepada guru."}</p>`;
+$("#nm").value=P.nama||"";$("#kl").value=P.kelas||""}
+function start(w){const e=$("#nm"),n=e?e.value.trim():(P.nama||"");if(!n){$("#err").textContent="Taip nama dahulu.";e.focus();return}
+P.nama=n;if(e)P.kelas=$("#kl").value.trim();sv("pj_p",P);
+g={w,q:build(w),i:0,l:3,m:0,ok:0,lock:0};$("#hud").style.visibility="visible";draw()}
+function hud(){$("#st").textContent=TN[T]+", Dunia "+(g.w+1)+": "+(g.i+1)+"/"+g.q.length;$("#co").textContent="🪙 "+g.m;$("#lv").textContent="❤️".repeat(g.l)+"🖤".repeat(3-g.l)}
+function draw(){cur=g.q[g.i];g.lock=0;g.t0=Date.now();hud();
+M.innerHTML=`<div class="card">${cur.top}</div>${T==2?'<div class="bar"><i id="bar"></i></div>':""}<div class="tip">${cur.tip}</div><div id="opts">${cur.opts.map(x=>`<button class="${cur.cls}" data-v="${x}">${x}</button>`).join("")}</div><div id="msg">Ketuk blok yang betul.</div>`;
+$("#opts").onclick=e=>{const b=e.target.closest(".blk");if(b)answer(b)};
+clearInterval(tm);if(T==2)tm=setInterval(()=>{const l=LIM-(Date.now()-g.t0)/1000;$("#bar").style.width=Math.max(0,l/LIM*100)+"%";if(l<=0)answer(null)},100)}
+function answer(b){if(g.lock)return;g.lock=1;clearInterval(tm);
+const right=!!b&&b.dataset.v===cur.ans,h=$("#hero");
+if(right){const m=PT[T]+(T==2?Math.round(Math.max(0,LIM-(Date.now()-g.t0)/1000)/LIM*10):0);g.m+=m;g.ok++;b.classList.add("good");
+h.classList.remove("jump");void h.getBoundingClientRect();h.classList.add("jump");
+const p=document.createElement("div");p.className="pop";p.textContent="🪙 +"+m;$("#app").appendChild(p);setTimeout(()=>p.remove(),900);beep(880);
+$("#msg").textContent="Betul! +"+m+" markah"}
+else{g.l--;if(b)b.classList.add("bad");document.querySelectorAll(".blk").forEach(x=>{if(x.dataset.v===cur.ans)x.classList.add("show")});beep(150);
+$("#msg").textContent=(b?"Hampir! ":"Masa tamat! ")+"Jawapan: "+cur.ans}
+hud();setTimeout(()=>{if(g.l<1)end(0);else if(g.i+1>=g.q.length)end(1);else{g.i++;draw()}},1500)}
+async function save(){const id=myId();let old=null;
+if(shared()){try{const s=await db.collection("scores").doc(id).get();old=s.exists?s.data():null}catch(e){}}else old=ls("pj_lb",{})[id];
+const best={...((old&&old.best)||{})},k=""+T+g.w;best[k]=Math.max(best[k]||0,g.m);
+const d={nama:P.nama,kelas:P.kelas||"",best,total:Object.values(best).reduce((a,b)=>a+b,0),plays:((old&&old.plays)||0)+1,last:Date.now()};
+let ok=!shared();if(shared()){try{await db.collection("scores").doc(id).set(d);ok=true}catch(e){}}
+if(!shared()){const a=ls("pj_lb",{});a[id]=d;sv("pj_lb",a)}
+B=B.filter(x=>x.id!==id).concat({id,...d});return ok}
+const rank=()=>[...B].sort((a,b)=>b.total-a.total||(a.last||0)-(b.last||0));
+function boardHTML(){const r=rank(),id=myId(),me=r.findIndex(x=>x.id==id),md=["🥇","🥈","🥉"];
+const row=(x,i)=>`<div class="row ${x.id==id?"me":""}"><span>${md[i]||"#"+(i+1)}</span><span class="nm">${esc(x.nama)}<small>${esc(x.kelas)}</small></span><b>${x.total}</b></div>`;
+return `<div class="card"><b>Carta Tangga</b>${r.slice(0,10).map(row).join("")||'<p class="note">Belum ada markah.</p>'}${me>=10?row(r[me],me):""}${me>=0?`<p class="note">Kedudukan anda: ${me+1} daripada ${r.length}</p>`:""}${shared()?"":'<p class="note">Carta kelas akan dikongsi oleh guru.</p>'}</div>`}
+function board(){V="board";$("#hud").style.visibility="hidden";M.innerHTML="<h1>Carta Tangga</h1>"+boardHTML()+'<button class="btn" onclick="home()">Menu</button>'}
+async function end(win){clearInterval(tm);V="end";$("#hud").style.visibility="hidden";
+const r=g.ok/g.q.length,n=win?(r>=.9?3:r>=.7?2:1):0,w=g.w;
+const cd="PJ1:"+btoa(unescape(encodeURIComponent(JSON.stringify([P.nama,P.kelas||"",T,w,g.m,g.ok,g.q.length,Date.now().toString(36)+Math.random().toString(36).slice(2,6)]))));
+L=`Pengembaraan Jawi\nNama: ${P.nama}\nKelas: ${P.kelas||"-"}\nTahap: ${TN[T]}, Dunia ${w+1}\nMarkah: ${g.m} (${g.ok}/${g.q.length} betul)\nKod: ${cd}`;
+M.innerHTML='<p class="sub">Menyimpan markah...</p>';const ok=await save();
+M.innerHTML=`<h1>${win?"Dunia selesai!":"Nyawa habis"}</h1><div class="stars">${"⭐".repeat(n)||"💔"}</div><p class="sub">Markah: <b>🪙 ${g.m}</b><br>${g.ok} betul daripada ${g.q.length}</p>${ok?"":'<p class="err">Markah tidak dapat dihantar ke carta kelas.</p>'}${boardHTML()}`+
+(win&&w<2?`<button class="btn alt" onclick="start2(${w+1})">Dunia seterusnya</button>`:"")+
+`<button class="btn" onclick="start2(${w})">Main semula</button><button class="btn" onclick="cp()">Salin keputusan</button><button class="btn" onclick="home()">Menu</button>`}
+function start2(w){start(w)}
+async function cp(){try{await navigator.clipboard.writeText(L);alert("Keputusan disalin. Hantar kepada guru melalui WhatsApp.")}catch(e){alert(L)}}
+const td=()=>ls("pj_teach",{}),tl=()=>Object.entries(td()).filter(([k])=>k!="__seen").map(([id,r])=>({id,...r})).sort((a,b)=>b.total-a.total||(a.last||0)-(b.last||0)),tt=(x,i)=>[0,1,2].reduce((a,w)=>a+((x.best||{})[""+i+w]||0),0);
+function guru(msg){V="guru";$("#hud").style.visibility="hidden";const r=tl();
+M.innerHTML=`<h1>Semakan guru</h1><p class="note">Tampal mesej atau kod keputusan murid (satu atau banyak sekali gus).</p><textarea id="cd" rows="4" style="width:100%;box-sizing:border-box;border:3px solid var(--ink);border-radius:10px;padding:8px;font:inherit;background:var(--card);color:var(--ink)"></textarea><button class="btn alt" onclick="addc()">Tambah ke carta</button><p class="err">${msg||""}</p><p class="note">${r.length} murid</p><div class="tbl"><table><tr><th>#</th><th>Nama</th><th>Kelas</th><th>Mudah</th><th>Sed.</th><th>Sukar</th><th>Jumlah</th><th>Main</th></tr>${r.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.nama)}</td><td>${esc(x.kelas)}</td><td>${tt(x,0)}</td><td>${tt(x,1)}</td><td>${tt(x,2)}</td><td><b>${x.total}</b></td><td>${x.plays||0}</td></tr>`).join("")}</table></div><button class="btn" onclick="ctext()">Salin carta untuk kelas</button><button class="btn" onclick="csv()">Muat turun CSV</button><button class="btn" onclick="if(confirm('Padam semua data murid?')){sv('pj_teach',{});guru()}">Padam semua</button><button class="btn" onclick="home()">Menu</button>`}
+function addc(){const t=$("#cd").value,s=td(),seen=s.__seen||{};let n=0,bad=0;
+for(const m of t.matchAll(/PJ1:([A-Za-z0-9+\/=]+)/g)){try{const [nm,kl,tp,w,mk,ok,tot,id]=JSON.parse(decodeURIComponent(escape(atob(m[1]))));if(seen[id])continue;seen[id]=1;
+const key=(String(nm).trim()+"|"+String(kl).trim()).toLowerCase(),x=s[key]||{nama:String(nm).slice(0,30),kelas:String(kl).slice(0,20),best:{},plays:0,total:0};
+const k=""+(+tp)+(+w);x.best[k]=Math.max(x.best[k]||0,+mk||0);x.total=Object.values(x.best).reduce((a,b)=>a+b,0);x.plays++;x.last=Date.now();s[key]=x;n++}catch(e){bad++}}
+s.__seen=seen;sv("pj_teach",s);guru(n+" kod ditambah"+(bad?", "+bad+" tidak sah":""))}
+async function ctext(){const t="🏆 Carta Tangga Pengembaraan Jawi\n"+tl().slice(0,10).map((x,i)=>(["🥇","🥈","🥉"][i]||(i+1)+".")+" "+x.nama+(x.kelas?" ("+x.kelas+")":"")+" - "+x.total).join("\n");
+try{await navigator.clipboard.writeText(t);alert("Carta disalin. Tampal di kumpulan WhatsApp kelas.")}catch(e){alert(t)}}
+async function csv(){const q=v=>{v=String(v==null?"":v);if(/^[=+\-@]/.test(v))v="'"+v;return '"'+v.replace(/"/g,'""')+'"'};
+const rows=["Kedudukan,Nama,Kelas,Mudah,Sederhana,Sukar,Jumlah,Kali main",...tl().map((x,i)=>[i+1,q(x.nama),q(x.kelas),tt(x,0),tt(x,1),tt(x,2),x.total,x.plays||0].join(","))];
+try{const d=await claude.use("downloads");if(!d){alert("Muat turun tidak tersedia di sini.");return}await d.save({filename:"keputusan-jawi.csv",data:"\ufeff"+rows.join("\n")})}catch(e){}}
+function beep(f){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),v=c.createGain();o.frequency.value=f;o.type="square";v.gain.value=.07;o.connect(v);v.connect(c.destination);o.start();o.stop(c.currentTime+.18)}catch(e){}}
+home();
+</script>
+</body>
+</html>
